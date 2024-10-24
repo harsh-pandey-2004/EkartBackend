@@ -33,7 +33,7 @@ const requestPasswordChange = async (req, res) => {
       sameSite: "none",
     });
 
-    const resetLink = `${process.env.CHANGE_PASSWORD_FRONTEND_URL}/reset-password?token=${password_token}`;
+    const resetLink = `${process.env.CHANGE_PASSWORD_FRONTEND_URL}?token=${password_token}`;
     // console.log(password_token);
 
     // Send email

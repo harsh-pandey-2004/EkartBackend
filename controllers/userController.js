@@ -148,7 +148,7 @@ const updateProfile = async (req, res) => {
 const userProfile = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(req.cookies.auth_token);
+    // console.log(req.cookies.auth_token);
 
     const userData = await User.findById(id).select("-password");
     if (!userData) {
