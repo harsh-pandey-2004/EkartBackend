@@ -65,6 +65,11 @@ const resetPassword = async (req, res) => {
     if (!updateUser) {
       return res.status(400).send("Invalid or expired token");
     }
+    res.cookie("pass_token", "", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
     return res.send("Password successfully changed");
   } catch (error) {
     return res.status(500).json({ message: "Error resetting password" });
