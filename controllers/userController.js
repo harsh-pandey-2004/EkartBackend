@@ -69,6 +69,50 @@ const loginUser = async (req, res) => {
   }
 };
 
+// Get User profile
+const userProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+    // console.log(req.cookies.auth_token);
+
+    const userData = await User.findById(id).select("-password");
+    if (!userData) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+    return res.status(200).json({ data: userData });
+  } catch (error) {
+    return res.status(500).json({
+      meaage: "error in profile " + error.message,
+    });
+  }
+};
+
+// Update User
+const updateProfile = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const { email, name, lastname, phone, address } = req.body;
+    const userData = await User.findByIdAndUpdate(
+      id,
+      { name, lastname, phone, address, email },
+      { new: true, runValidators: true }
+    );
+
+    if (!userData) {
+      return res.status(400).json({ message: "User not found" });
+    }
+    res.json({
+      message: " Profile updated successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error in Update Profile Module " + error,
+    });
+  }
+};
+
 // Logout User
 const logOutUser = async (req, res) => {
   try {
@@ -101,65 +145,6 @@ const deleteUser = async (req, res) => {
     // console.log("a");
     return res.status(500).json({
       message: "Error in Delete Module " + error,
-    });
-  }
-};
-
-// const editProfile = async (req, res) => {
-//   try {
-//     const { email } = req.body;
-//     const user = await User.findOne({ email });
-//     if (!user) {
-//       return res.status(400).json({ message: "User not found" });
-//     }
-//     res.json({ user });
-//   } catch (error) {
-//     return res.status(500).json({
-//       message: "Error in Edit Profile Module " + error,
-//     });
-//   }
-// };
-
-// Update User
-const updateProfile = async (req, res) => {
-  try {
-    const { id } = req.user;
-    const { email, name, lastname, phone, address } = req.body;
-    const userData = await User.findByIdAndUpdate(
-      id,
-      { name, lastname, phone, address, email },
-      { new: true, runValidators: true }
-    );
-
-    if (!userData) {
-      return res.status(400).json({ message: "User not found" });
-    }
-    res.json({
-      message: " Profile updated successfully",
-    });
-  } catch (error) {
-    return res.status(500).json({
-      message: "Error in Update Profile Module " + error,
-    });
-  }
-};
-
-// Get User profile
-const userProfile = async (req, res) => {
-  try {
-    const { id } = req.params;
-    // console.log(req.cookies.auth_token);
-
-    const userData = await User.findById(id).select("-password");
-    if (!userData) {
-      return res.status(404).json({
-        message: "User not found",
-      });
-    }
-    return res.status(200).json({ data: userData });
-  } catch (error) {
-    return res.status(500).json({
-      meaage: "error in profile " + error.message,
     });
   }
 };

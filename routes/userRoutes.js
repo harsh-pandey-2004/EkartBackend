@@ -40,7 +40,7 @@ router.post(
   authenticateToken,
   requestPasswordChange
 ); // Request to Change Password for User Account
-router.put("/reset-password", password_auth, resetPassword); // Change Password
+router.put("/reset-password/:token", password_auth, resetPassword); // Change Password
 
 router.post("/addtocart", authenticateToken, addtoCart); // Add Item to Cart
 router.get("/cartitems", authenticateToken, listCartItems); // List Cart Items
