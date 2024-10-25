@@ -53,10 +53,11 @@ const PasswordResetToken = require("../models/passwordResetToken");
 
 const requestPasswordChange = async (req, res) => {
   try {
-    const { email } = req.body;
-    const user = await User.findOne({ email });
+    const { id } = req.user;
+    const userData = await User.findById(id);
+    const { email } = userData;
 
-    if (!user) {
+    if (!userData) {
       return res.status(404).send("User not found");
     }
 
@@ -71,7 +72,7 @@ const requestPasswordChange = async (req, res) => {
       },
     });
 
-    const passwordToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    const passwordToken = jwt.sign({ id }, process.env.JWT_SECRET, {
       expiresIn: "5m",
     });
 
@@ -79,7 +80,7 @@ const requestPasswordChange = async (req, res) => {
 
     // Save the token in the database with a 30-minute expiration
     await PasswordResetToken.create({
-      userId: user._id,
+      userId: id,
       token: passwordToken,
       expiresAt: new Date(Date.now() + 5 * 60 * 1000), // 30 minutes from now
     });
