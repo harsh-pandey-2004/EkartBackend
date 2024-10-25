@@ -134,8 +134,8 @@ const logOutUser = async (req, res) => {
 // Delete User
 const deleteUser = async (req, res) => {
   try {
-    const { email } = req.body;
-    const deleteaccount = await User.findOneAndDelete({ email });
+    const { id } = req.user;
+    const deleteaccount = await User.findByIdAndDelete(id);
 
     if (!deleteaccount) {
       return res.status(400).json({ message: "User not found" });
