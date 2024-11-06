@@ -164,4 +164,55 @@ const verifyOrder = async (req, res) => {
   }
 };
 
-module.exports = { placeOrdercart, verifyOrder, placeOrderProduct };
+const getOrderWithInvoices = async (req, res) => {
+  const { orderId } = req.params;
+
+  try {
+    const order = await orderModel
+      .findById(orderId)
+      .populate("items.productId");
+
+    if (!order) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Order not found" });
+    }
+
+    const invoices = order.items.map((item) => {
+      const { productId, quantity } = item;
+      const total = productId.price * quantity;
+
+      return {
+        productName: productId.name,
+        productPrice: productId.price,
+        quantity: quantity,
+        total: total,
+        userId: order.userId,
+        orderId: order._id,
+        orderDate: order.createdAt,
+      };
+    });
+
+    return res.json({
+      success: true,
+      orderId: order._id,
+      userId: order.userId,
+      address: order.address,
+      totalAmount: order.amount,
+      paymentStatus: order.payment,
+      invoices: invoices,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong - " + error.message,
+    });
+  }
+};
+
+module.exports = {
+  placeOrdercart,
+  verifyOrder,
+  placeOrderProduct,
+  getOrderWithInvoices,
+};

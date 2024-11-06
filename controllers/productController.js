@@ -1,7 +1,5 @@
-// controllers/productController.js
 const Product = require("../models/productModel");
 
-// Add a new product
 const addProduct = async (req, res) => {
   try {
     const { name, description, price, quantity, imageUrl } = req.body;
@@ -31,7 +29,6 @@ const addProduct = async (req, res) => {
   }
 };
 
-// Get all products
 const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find();
@@ -54,7 +51,6 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-// Update a product
 const updateProduct = async (req, res) => {
   const { id } = req.params;
   const { name, description, price, quantity, imageUrl } = req.body;
@@ -77,7 +73,27 @@ const updateProduct = async (req, res) => {
   }
 };
 
-// Delete a product
+const getProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json({
+      message: "Product fetched successfully",
+      data: product,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "Error - " + err.message,
+    });
+  }
+};
+
 const deleteProduct = async (req, res) => {
   const { id } = req.params;
 
@@ -92,4 +108,54 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-module.exports = { addProduct, getAllProducts, updateProduct, deleteProduct };
+module.exports = {
+  addProduct,
+  getAllProducts,
+  updateProduct,
+  getProduct,
+  deleteProduct,
+};
+
+// // src/components/ProductDetails.js
+// import React, { useEffect, useState } from "react";
+// import { useParams } from "react-router-dom";
+// import axios from "axios";
+
+// const ProductDetails = () => {
+//   const { id } = useParams(); // Get product ID from route parameters
+//   const [product, setProduct] = useState(null);
+//   const [error, setError] = useState(null);
+
+//   useEffect(() => {
+//     const fetchProduct = async () => {
+//       try {
+//         const response = await axios.get(`/api/product/${id}`);
+//         setProduct(response.data.data);
+//       } catch (err) {
+//         setError("Error fetching product details.");
+//       }
+//     };
+
+//     fetchProduct();
+//   }, [id]);
+
+//   if (error) return <p>{error}</p>;
+
+//   return (
+//     <div>
+//       {product ? (
+//         <div>
+//           <h2>{product.name}</h2>
+//           <p>Description: {product.description}</p>
+//           <p>Price: ${product.price}</p>
+//           <p>Quantity: {product.quantity}</p>
+//           <img src={product.imageUrl} alt={product.name} style={{ width: "200px" }} />
+//         </div>
+//       ) : (
+//         <p>Loading product details...</p>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default ProductDetails;

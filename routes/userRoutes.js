@@ -29,25 +29,25 @@ const {
 
 const router = express.Router();
 
-router.post("/register", registerUser); // Add a User
-router.post("/login", loginUser); // Login for user
-router.post("/logout", logOutUser); // Logout User
-router.delete("/delete", authenticateToken, deleteUser); // Delete User
-router.get("/profile/:id", authenticateToken, userProfile); // View User Profile
-router.patch("/updateprofile", authenticateToken, updateProfile); // Commit Updates On User profile
+router.post("/register", registerUser);
+router.post("/login", loginUser);
+router.post("/logout", logOutUser);
+router.delete("/delete", authenticateToken, deleteUser);
+router.get("/profile/:id", authenticateToken, userProfile);
+router.patch("/updateprofile", authenticateToken, updateProfile);
 router.post(
   "/request-password-change",
   authenticateToken,
   requestPasswordChange
-); // Request to Change Password for User Account
-router.put("/reset-password/:token", password_auth, resetPassword); // Change Password
+);
+router.put("/reset-password/:token", password_auth, resetPassword);
 
-router.post("/addtocart", authenticateToken, addtoCart); // Add Item to Cart
-router.get("/cartitems", authenticateToken, listCartItems); // List Cart Items
-router.delete("/deletecartItem", authenticateToken, removeCartItems); // Delete Cart Item
+router.post("/addtocart", authenticateToken, addtoCart);
+router.get("/cartitems", authenticateToken, listCartItems);
+router.delete("/deletecartItem", authenticateToken, removeCartItems);
 
-router.post("/addtowishlist", authenticateToken, addtoWishlist); // Add Item to Wishlist
-router.get("/wishlist", authenticateToken, listWishlist); //  List Wishlist Items
+router.post("/addtowishlist", authenticateToken, addtoWishlist);
+router.get("/wishlist", authenticateToken, listWishlist);
 router.delete("/removefromwishlist", authenticateToken, deleteWishlistItem);
 
 module.exports = router;
