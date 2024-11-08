@@ -5,6 +5,7 @@ const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const sellerRoutes = require("./routes/sellerRoutes");
 const { authenticateToken } = require("./middleware/auth");
 const cors = require("cors");
 const cookie = require("cookie-parser");
@@ -28,6 +29,7 @@ app.get("/", (req, res) => {
 app.use("/users", userRoutes);
 app.use("/products", productRoutes);
 app.use("/orders", orderRoutes);
+app.use("/sellers", sellerRoutes);
 app.get("/protected", authenticateToken, (req, res) => {
   res.json({
     success: true,

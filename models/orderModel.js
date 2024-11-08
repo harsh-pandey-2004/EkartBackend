@@ -4,14 +4,14 @@ const orderSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Reference to User model
+      ref: "User",
       required: true,
     },
     items: [
       {
         productId: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Product", // Reference to Product model
+          ref: "Product",
           required: true,
         },
         quantity: {
@@ -21,19 +21,19 @@ const orderSchema = new mongoose.Schema(
       },
     ],
     amount: {
-      type: Number, // Total order amount
+      type: Number,
       required: true,
     },
     address: {
-      type: String, // Delivery address
+      type: String,
       required: true,
     },
     payment: {
-      type: Boolean, // Payment status (true if paid, false otherwise)
+      type: Boolean,
       default: false,
     },
   },
-  { timestamps: true } // Automatically adds createdAt and updatedAt fields
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Order", orderSchema);
