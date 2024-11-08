@@ -44,7 +44,7 @@ const listCartItems = async (req, res) => {
     const userData = await user
       .findById(userId)
       .select("cartItems")
-      .populate("productId");
+      .populate("cartItems.productId");
     if (!userData) {
       return res.status(404).json({ message: "Data not found" });
     }
