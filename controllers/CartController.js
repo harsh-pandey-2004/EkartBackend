@@ -71,6 +71,9 @@ const removeCartItems = async (req, res) => {
       (item) => String(item?.productId) !== productId
     );
 
+    if (removeArr.length === 0) {
+      return res.status(404).json({ message: "Product not found in cart" });
+    }
     await user.findByIdAndUpdate(
       userId,
       { cartItems: removeArr },
