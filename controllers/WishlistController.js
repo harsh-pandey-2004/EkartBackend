@@ -1,10 +1,10 @@
-const User = require("../models/user");
+const user = require("../models/user");
 
 const addtoWishlist = async (req, res) => {
   try {
     const { productId } = req.body;
     const userId = req.user.id;
-    const userData = await User.findById(userId);
+    const userData = await user.findById(userId);
     if (!userData) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -19,7 +19,7 @@ const addtoWishlist = async (req, res) => {
     } else {
       wishlistData.push({ productId });
     }
-    await User.findByIdAndUpdate(
+    await user.findByIdAndUpdate(
       userId,
       { WishlistItems: wishlistData },
       { new: true }
@@ -34,7 +34,8 @@ const addtoWishlist = async (req, res) => {
 const listWishlist = async (req, res) => {
   try {
     const userId = req.user.id;
-    const userData = await User.findById(userId)
+    const userData = await user
+      .findById(userId)
       .select("WishlistItems")
       .populate("WishlistItems.productId");
     if (!userData) {
@@ -53,7 +54,7 @@ const deleteWishlistItem = async (req, res) => {
   try {
     const { productId } = req.body;
     const userId = req.user.id;
-    const userData = await User.findById(userId);
+    const userData = await user.findById(userId);
     if (!userData) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -61,7 +62,7 @@ const deleteWishlistItem = async (req, res) => {
       (item) => String(item?.productId) !== productId
     );
 
-    await User.findByIdAndUpdate(
+    await user.findByIdAndUpdate(
       userId,
       { WishlistItems: removeArr },
       { new: true }
@@ -72,7 +73,7 @@ const deleteWishlistItem = async (req, res) => {
     // );
     // if (index !== -1) {
     //   userData.WishlistItems.splice(index, 1);
-    //   await User.findByIdAndUpdate(
+    //   await user.findByIdAndUpdate(
     //     userId,
     //     { WishlistItems: userData.WishlistItems },
     //     {

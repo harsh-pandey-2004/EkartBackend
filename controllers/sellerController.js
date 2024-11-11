@@ -16,7 +16,9 @@ const registerSeller = async (req, res) => {
       password,
     } = req.body;
 
-    const existingseller = await seller.findOne({ email });
+    const existingseller = await seller.findOne({
+      $or: [{ email }, { phone }],
+    });
     if (existingseller) {
       return res
         .status(400)
