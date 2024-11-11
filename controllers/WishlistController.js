@@ -57,22 +57,32 @@ const deleteWishlistItem = async (req, res) => {
     if (!userData) {
       return res.status(404).json({ message: "User not found" });
     }
-    const index = userData.WishlistItems.findIndex(
-      (item) => item?.productId.toString() == productId
+    const removeArr = userData.WishlistItems.filter(
+      (item) => String(item?.productId) !== productId
     );
-    if (index !== -1) {
-      userData.WishlistItems.splice(index, 1);
-      await User.findByIdAndUpdate(
-        userId,
-        { WishlistItems: userData.WishlistItems },
-        {
-          new: true,
-        }
-      );
-      return res.status(200).json({ message: "Product removed from Wishlist" });
-    } else {
-      return res.status(404).json({ message: "Product not found in Wishlist" });
-    }
+
+    await User.findByIdAndUpdate(
+      userId,
+      { WishlistItems: removeArr },
+      { new: true }
+    );
+    return res.status(200).json({ message: "Product removed from Wishlist" });
+    // const index = userData.WishlistItems.findIndex(
+    //   (item) => item?.productId.toString() == productId
+    // );
+    // if (index !== -1) {
+    //   userData.WishlistItems.splice(index, 1);
+    //   await User.findByIdAndUpdate(
+    //     userId,
+    //     { WishlistItems: userData.WishlistItems },
+    //     {
+    //       new: true,
+    //     }
+    //   );
+    //   return res.status(200).json({ message: "Product removed from Wishlist" });
+    // } else {
+    //   return res.status(404).json({ message: "Product not found in Wishlist" });
+    // }
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
