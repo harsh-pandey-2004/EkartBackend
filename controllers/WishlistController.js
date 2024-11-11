@@ -15,10 +15,10 @@ const addtoWishlist = async (req, res) => {
     );
 
     if (findKey) {
-      return res.status(400).json({ message: "Product already in wishlist" });
-    } else {
-      wishlistData.push({ productId });
+      return res.status(200).json({ message: "Product already in wishlist" });
     }
+    wishlistData.push({ productId });
+
     await user.findByIdAndUpdate(
       userId,
       { WishlistItems: wishlistData },

@@ -20,9 +20,9 @@ const registerSeller = async (req, res) => {
       $or: [{ email }, { phone }],
     });
     if (existingseller) {
-      return res
-        .status(400)
-        .json({ message: "Seller already exists with this email." });
+      return res.status(400).json({
+        message: "Seller already exists.",
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
