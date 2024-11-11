@@ -67,20 +67,22 @@ const removeCartItems = async (req, res) => {
     if (!userData) {
       return res.status(404).json({ message: "User not found" });
     }
-    const index = userData.cartItems.findIndex(
-      (item) => item.productId == productId
+    const removeArr = userData.cartItems.filter(
+      (item) => String(item?.productId) !== productId
     );
-    if (index !== -1) {
-      userData.cartItems.splice(index, 1);
-      await user.findByIdAndUpdate(
-        userId,
-        { cartItems: userData.cartItems },
-        { new: true }
-      );
-      return res.status(200).json({ message: "Product removed from cart" });
-    } else {
-      return res.status(404).json({ message: "Product not found in cart" });
-    }
+
+    await user.findByIdAndUpdate(
+      userId,
+      { cartItems: removeArr },
+      { new: true }
+    );
+    return res.status(200).json({ message: "Product removed from cart" });
+    // if (index !== -1) {
+    //   userData.cartItems.splice(index, 1);
+
+    // } else {
+    //   return res.status(404).json({ message: "Product not found in cart" });
+    // }
   } catch (error) {
     return res.status(500).json({
       message: "Error removing cart items" + error,
