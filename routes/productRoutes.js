@@ -7,14 +7,14 @@ const {
   getProduct,
   deleteProduct,
 } = require("../controllers/productController");
-const authenticateToken = require("../middleware/auth"); // Optional: authentication middleware
+const { authenticateSeller } = require("../middleware/auth"); // Optional: authentication middleware
 
 const router = express.Router();
 
-router.post("/add", addProduct); // Add a product
+router.post("/add", authenticateSeller, addProduct); // Add a product
 router.get("/listproducts", getAllProducts); // Get all products
-router.put("/update/:id", updateProduct); // Update a product by ID
+router.put("/update/:id", authenticateSeller, updateProduct); // Update a product by ID
 router.get("/product/:id", getProduct);
-router.delete("/delete/:id", deleteProduct); // Delete a product by ID
+router.delete("/delete/:id", authenticateSeller, deleteProduct); // Delete a product by ID
 
 module.exports = router;

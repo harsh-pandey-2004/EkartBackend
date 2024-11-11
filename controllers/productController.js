@@ -6,6 +6,7 @@ const addProduct = async (req, res) => {
 
     const newProduct = new Product({
       name,
+      sellerId: req.seller.id,
       description,
       price,
       quantity,
@@ -76,8 +77,11 @@ const updateProduct = async (req, res) => {
 const getProduct = async (req, res) => {
   try {
     const { id } = req.params;
-
-    const product = await Product.findById(id);
+    //const sellerId = req.seller.id;
+    const product = await Product.findById(id).populate({
+      path: "sellerId",
+      select: "name",
+    });
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
