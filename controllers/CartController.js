@@ -61,7 +61,7 @@ const listCartItems = async (req, res) => {
 
 const removeCartItems = async (req, res) => {
   try {
-    const { productId } = req.body;
+    const { productId } = req.params;
     const userId = req.user.id;
     const userData = await user.findById(userId);
     if (!userData) {

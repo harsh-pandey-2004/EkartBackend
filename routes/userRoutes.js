@@ -31,7 +31,7 @@ const router = express.Router();
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.post("/logout", logOutUser);
+router.post("/logout", authenticateToken, logOutUser);
 router.delete("/delete", authenticateToken, deleteUser);
 router.get("/profile/:id", authenticateToken, userProfile);
 router.patch("/updateprofile", authenticateToken, updateProfile);
@@ -44,10 +44,10 @@ router.put("/reset-password/:token", password_auth, resetPassword);
 
 router.post("/addtocart", authenticateToken, addtoCart);
 router.get("/cartitems", authenticateToken, listCartItems);
-router.delete("/deletecartItem", authenticateToken, removeCartItems);
+router.delete("/deletecartItem/:id", authenticateToken, removeCartItems);
 
 router.post("/addtowishlist", authenticateToken, addtoWishlist);
 router.get("/wishlist", authenticateToken, listWishlist);
-router.delete("/removefromwishlist", authenticateToken, deleteWishlistItem);
+router.delete("/removefromwishlist/:id", authenticateToken, deleteWishlistItem);
 
 module.exports = router;
