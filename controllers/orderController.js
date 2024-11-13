@@ -8,13 +8,12 @@ const mongoose = require("mongoose");
 const placeOrdercart = async (req, res) => {
   const frontEndUrl = process.env.PAYMENT_FRONTEND_URL;
 
-  const { id, address } = req.body;
-
+  const { address } = req.body;
+  const { id } = req.user;
   try {
     const userdata = await userModel
       .findById(id)
       .populate("cartItems.productId");
-
     if (!userdata || userdata.cartItems.length === 0) {
       return res
         .status(400)
@@ -87,8 +86,8 @@ const placeOrdercart = async (req, res) => {
 };
 
 const placeOrderProduct = async (req, res) => {
-  const { productId, userId, quantity, address } = req.body;
-
+  const { productId, quantity, address } = req.body;
+  const userId = req.user.id;
   try {
     const product = await productModel.findById(productId);
     if (!product) {

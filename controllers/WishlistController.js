@@ -61,8 +61,10 @@ const deleteWishlistItem = async (req, res) => {
     const removeArr = userData.WishlistItems.filter(
       (item) => String(item?.productId) !== productId
     );
-
-    if (removeArr.length === 0) {
+    const findKey = userData.WishlistItems.find(
+      (item) => String(item?.productId) === productId
+    );
+    if (!findKey) {
       return res.status(404).json({ message: "Product not found in wishlist" });
     }
     await user.findByIdAndUpdate(

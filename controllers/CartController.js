@@ -70,8 +70,10 @@ const removeCartItems = async (req, res) => {
     const removeArr = userData.cartItems.filter(
       (item) => String(item?.productId) !== productId
     );
-
-    if (removeArr.length === 0) {
+    const findKey = userData.cartItems.find(
+      (item) => String(item?.productId) === productId
+    );
+    if (!findKey) {
       return res.status(404).json({ message: "Product not found in cart" });
     }
     await user.findByIdAndUpdate(
