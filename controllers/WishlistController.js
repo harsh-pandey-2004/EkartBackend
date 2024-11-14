@@ -52,7 +52,7 @@ const listWishlist = async (req, res) => {
 
 const deleteWishlistItem = async (req, res) => {
   try {
-    const { productId } = req.params;
+    const productId = req.params.id;
     const userId = req.user.id;
     const userData = await user.findById(userId);
     if (!userData) {
@@ -61,9 +61,11 @@ const deleteWishlistItem = async (req, res) => {
     const removeArr = userData.WishlistItems.filter(
       (item) => String(item?.productId) !== productId
     );
+
     const findKey = userData.WishlistItems.find(
       (item) => String(item?.productId) === productId
     );
+
     if (!findKey) {
       return res.status(404).json({ message: "Product not found in wishlist" });
     }
