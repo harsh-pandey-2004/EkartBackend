@@ -6,6 +6,7 @@ const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const sellerRoutes = require("./routes/sellerRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 const { authenticateToken } = require("./middleware/auth");
 const cors = require("cors");
 const cookie = require("cookie-parser");
@@ -22,21 +23,12 @@ app.use(cookie());
 
 connectDB();
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
 app.use("/users", userRoutes);
 app.use("/products", productRoutes);
 app.use("/orders", orderRoutes);
 app.use("/sellers", sellerRoutes);
-app.get("/protected", authenticateToken, (req, res) => {
-  res.json({
-    success: true,
-    message: "You have access to this protected route",
-    user: req.user,
-  });
-});
+app.use("/admin", adminRoutes);
+app.get("/protected", authenticateToken);
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");

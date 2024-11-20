@@ -1,13 +1,19 @@
 const ReturnReplacement = require("../models/ReturnReplacement");
 const Order = require("../models/orderModel");
 const productModel = require("../models/productModel");
+const user = require("../models/user");
 
 const requestReturnReplacement = async (req, res) => {
   try {
     const { orderId, productId, requestType, reason, quantity } = req.body;
     const userId = req.user.id;
-    if (!userId) {
-      return res.json({ message: "user not found" });
+    const userData = await user.findById(userId);
+    if (!userData) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.json({ message: "Order not found" });
     }
     const request = new ReturnReplacement({
       orderId,
@@ -78,21 +84,28 @@ const requestReturnReplacement = async (req, res) => {
 const updateRequestStatus = async (req, res) => {
   try {
     const { requestId, status } = req.body;
+    const requestData = await ReturnReplacement.findById(requestId);
+    if (!requestData) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Request not found" });
+    }
+    const product = await productModel.findById(requestData.productId);
+    if (!product) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
+    }
     const request = await ReturnReplacement.findByIdAndUpdate(
       requestId,
       { status },
       { new: true }
     );
-
-    if (!request) {
-      return res.status(404).json({ message: "Request not found." });
-    }
-
-    res
+    return res
       .status(200)
       .json({ message: `Request status updated to ${status}.`, request });
   } catch (error) {
-    res
+    return res
       .status(500)
       .json({ message: "Failed to update request status.", error });
   }
