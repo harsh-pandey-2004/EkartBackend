@@ -224,9 +224,28 @@ const getOrderWithInvoices = async (req, res) => {
   }
 };
 
+const listOrders = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    console.log(userId);
+    const orders = await orderModel.find({ userId });
+    if (!orders) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No orders found" });
+    }
+    return res.json({ success: true, orders });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "error in list orders " + error.message });
+  }
+};
+
 module.exports = {
   placeOrdercart,
   verifyOrder,
   placeOrderProduct,
   getOrderWithInvoices,
+  listOrders,
 };

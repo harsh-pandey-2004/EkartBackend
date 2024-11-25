@@ -3,6 +3,7 @@ const user = require("../models/user");
 const seller = require("../models/sellerModel");
 const product = require("../models/productModel");
 const order = require("../models/orderModel");
+const request = require("../models/ReturnReplacement");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -64,11 +65,11 @@ const loginAdmin = async (req, res) => {
 
 const logoutAdmin = async (req, res) => {
   try {
-    const { id } = req.admin;
-    const adminData = await admin.findById(id);
-    if (!adminData) {
-      return res.status(404).json({ message: "Admin not found" });
-    }
+    // const { id } = req.admin;
+    // const adminData = await admin.findById(id);
+    // if (!adminData) {
+    //   return res.status(404).json({ message: "Admin not found" });
+    // }
     const token = res.clearCookie("token", "", {
       httpOnly: true,
       secure: true,
@@ -139,6 +140,20 @@ const getallOrders = async (req, res) => {
   }
 };
 
+const getallRequests = async (req, res) => {
+  try {
+    const requestData = await request.find();
+    if (!requestData) {
+      return res.status(400).json({ message: "No Request found" });
+    }
+    res.status(200).json(requestData);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error Getting all Requests" + error });
+  }
+};
+
 module.exports = {
   registerAdmin,
   loginAdmin,
@@ -147,4 +162,5 @@ module.exports = {
   getallSellers,
   getallProducts,
   getallOrders,
+  getallRequests,
 };
