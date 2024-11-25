@@ -227,8 +227,9 @@ const getOrderWithInvoices = async (req, res) => {
 const listOrders = async (req, res) => {
   try {
     const userId = req.user.id;
-    console.log(userId);
-    const orders = await orderModel.find({ userId });
+    const orders = await orderModel
+      .find({ userId })
+      .populate("items.productId");
     if (!orders) {
       return res
         .status(404)
