@@ -78,7 +78,7 @@ const logoutAdmin = async (req, res) => {
     // if (!adminData) {
     //   return res.status(404).json({ message: "Admin not found" });
     // }
-    const token = res.clearCookie("token", "", {
+    res.cookie("token", "", {
       httpOnly: true,
       secure: true,
       sameSite: "none",
