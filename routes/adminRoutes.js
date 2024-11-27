@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   registerAdmin,
   loginAdmin,
+  verifyAdmin,
   logoutAdmin,
   getallUsers,
   getallSellers,
@@ -14,7 +15,7 @@ const { authenticateAdmin } = require("../middleware/adminAuth");
 
 router.post("/register", registerAdmin);
 router.post("/login", loginAdmin);
-router.get("/verify", authenticateAdmin);
+router.get("/verify", authenticateAdmin, verifyAdmin);
 router.post("/logout", logoutAdmin);
 router.get("/getusers", authenticateAdmin, getallUsers);
 router.get("/getsellers", authenticateAdmin, getallSellers);

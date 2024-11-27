@@ -53,7 +53,7 @@ const loginAdmin = async (req, res) => {
       path: "/",
     });
 
-    res
+    return res
       .status(200)
       .json({ data: adminData._id, message: "Admin logged in successfully" });
   } catch (error) {
@@ -61,6 +61,14 @@ const loginAdmin = async (req, res) => {
       .status(500)
       .json({ message: "Error login Admin" + error.message });
   }
+};
+
+const verifyAdmin = async (req, res) => {
+  return res.json({
+    message: "Admin verified successfully",
+    success: true,
+    id: req.admin._id,
+  });
 };
 
 const logoutAdmin = async (req, res) => {
@@ -157,6 +165,7 @@ const getallRequests = async (req, res) => {
 module.exports = {
   registerAdmin,
   loginAdmin,
+  verifyAdmin,
   logoutAdmin,
   getallUsers,
   getallSellers,
