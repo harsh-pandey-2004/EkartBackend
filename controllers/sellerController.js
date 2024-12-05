@@ -1,4 +1,5 @@
 const seller = require("../models/sellerModel");
+const product = require("../models/productModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -146,7 +147,7 @@ const deleteSellerProfile = async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .json({ message: "Error Deleting Seler -> " + error });
+      .json({ message: "Error Deleting Seller -> " + error });
   }
 };
 
@@ -169,6 +170,21 @@ const logOutSeller = async (req, res) => {
   }
 };
 
+const ListAllProducts = async (req, res) => {
+  try {
+    const { id } = req.seller;
+    const productData = await product.find({ sellerId: id });
+    if (!productData) {
+      return res.status(404).json({ message: "Product Not Found" });
+    }
+    return res.status(200).json(productData);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error Fetching Products -> " + error.message });
+  }
+};
+
 module.exports = {
   registerSeller,
   loginSeller,
@@ -176,4 +192,5 @@ module.exports = {
   updateSellerProfile,
   deleteSellerProfile,
   logOutSeller,
+  ListAllProducts,
 };
